@@ -3,6 +3,12 @@
 A **terminal** is a window where you type commands instead of clicking. Every
 later lesson uses it. This lesson teaches the five commands you need.
 
+> **Plan ahead: ask for access now.** If you will use the lab's GPU machines,
+> ask your computer administrator today for a user account and a Tailscale
+> invitation. It takes a person to grant them and may take days. The checklist
+> and a message to copy are in
+> [lesson 3, step 0](03-remote-machines.md#step-0-ask-your-labs-computer-administrator-for-access).
+
 ## Open a terminal
 
 - **macOS:** press `Command` + `Space`, type `Terminal`, press `Return`.

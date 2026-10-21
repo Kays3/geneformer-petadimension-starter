@@ -40,6 +40,19 @@ This starter assumes a small lab network of GPU machines that you reach with
 a GPU machine and fetches the result; running it on your own computer is the
 fallback.
 
+### Step 0: ask your lab's computer administrator
+
+Before anything else, ask for (a) a user account on the lab's GPU machines and
+(b) an invitation to the lab's Tailscale network. Tell them which machines and
+GPU access you need and where shared data lives, and send your SSH **public**
+key (never the private one). Make the key with
+`ssh-keygen -t ed25519 -C "yourname-laptop"` and print it with
+`cat ~/.ssh/id_ed25519.pub`. You are ready when the administrator has given
+you the machine names and both `tailscale status` and
+`ssh yourname@gpu-box-1` work. A checklist and a message to copy are in
+[lesson 3, step 0](tutorial/03-remote-machines.md#step-0-ask-your-labs-computer-administrator-for-access).
+Access takes a person, so ask first; the fallback below needs none of it.
+
 ### Main route: on a GPU machine over Tailscale and SSH
 
 With the GPU machine (here `gpu-box-1`) on your tailnet and `ssh gpu-box-1`

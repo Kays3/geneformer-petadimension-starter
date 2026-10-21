@@ -12,8 +12,8 @@ and come back later.
 This lesson describes your **own** network. Names below are placeholders:
 `laptop` is your computer, `gpu-box-1` is a GPU machine you can administer or
 have been given, and `yourname` is your user name on it. Substitute your own.
-Your administrator will tell you how to get an account; never share a private
-key.
+Start with step 0, which asks your administrator for an account and a
+tailnet invitation; never share a private key.
 
 ## Three tools in two sentences each
 
@@ -26,6 +26,70 @@ Your commands run on that machine until you type `exit`.
 
 **tmux** keeps a terminal session alive on the remote machine. If your laptop
 sleeps or the network drops, the session and anything running in it carry on.
+
+## Step 0. Ask your lab's computer administrator for access
+
+Do this first, before installing or learning anything else. Access takes a
+person to grant, so it may take days, and you can work through lessons 4 to 8
+on your laptop while you wait.
+
+**Checklist: what to ask for**
+
+- [ ] A user account on the lab's GPU machines. Say which user name you would like.
+- [ ] Which machines you may use, and whether you may use their GPUs.
+- [ ] An invitation to the lab's Tailscale network (the "tailnet"), sent to the
+      address you will sign in with.
+- [ ] Where shared data lives, and where you should keep your own files.
+- [ ] The fingerprint of each machine (used in step 2 to check you reached the real one).
+
+**What to send the administrator: your public key.** A key pair is two files.
+The private one stays on your laptop and is never sent to anyone. The public
+one (it ends in `.pub`) is what the administrator installs. Create the pair on
+your laptop and print the public half:
+
+```bash
+ssh-keygen -t ed25519 -C "yourname-laptop"
+cat ~/.ssh/id_ed25519.pub
+```
+
+Press `Return` to accept the default file name. Choose a passphrase if you
+can. The second command prints one line starting `ssh-ed25519`; copy that line
+into your message. If `~/.ssh/id_ed25519.pub` already exists, you have a key
+and can reuse it.
+
+**What you should get back**
+
+- [ ] The names of the machines (for example `gpu-box-1`) and your user name on them.
+- [ ] Confirmation that you are on the tailnet: `tailscale status` lists the machines (step 1).
+- [ ] Confirmation that `ssh yourname@gpu-box-1` opens a prompt (step 2).
+
+**A message you can copy and adapt**
+
+```text
+Subject: Access to the lab GPU machines and the tailnet
+
+Hello,
+
+I am starting to use Geneformer and would like to run jobs on the lab's GPU
+machines. Could you please:
+
+1. create a user account for me on the GPU machines (suggested name: yourname);
+2. tell me which machines I may use and whether I may use their GPUs;
+3. invite me to the lab's Tailscale network, at the address I sign in with;
+4. tell me where shared data lives and where to keep my own files;
+5. send me the SSH fingerprint of each machine so I can check I am connecting
+   to the right one.
+
+My public SSH key is below (the private key stays on my laptop):
+
+ssh-ed25519 AAAA...paste-your-whole-public-key-line-here... yourname-laptop
+
+I expect to use about 10 GB of disk and one GPU for a few hours per run, and
+will keep at least 15 GB of memory free for other users.
+
+Thank you,
+Your name
+```
 
 ## Step 1. Put both machines on your tailnet
 
@@ -79,10 +143,7 @@ Compare the `SHA256:...` fingerprint with the one the machine's
 administrator gives you, and type `yes` only if they match. Then the prompt
 changes to `yourname@gpu-box-1:~$`. Run `hostname`, then `exit` to come back.
 
-If you do not have a key yet, create one on the laptop with
-`ssh-keygen -t ed25519`, and give the administrator the **public** file
-(`~/.ssh/id_ed25519.pub`, the one ending in `.pub`). The private file stays on
-your laptop.
+If you have not made a key yet, see step 0.
 
 To type less, describe the machine once in `~/.ssh/config` on the laptop:
 
