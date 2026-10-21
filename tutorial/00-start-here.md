@@ -15,8 +15,9 @@ Technical terms are explained in the [glossary](GLOSSARY.md).
   needs more: the GPU test run used about 11 GB, most of it the GPU
   build of PyTorch.
 - An internet connection.
-- Optional, for [lesson 3](03-remote-machines.md): an account on a remote Linux
-  machine, ideally one with an NVIDIA GPU. Your institution provides this.
+- Optional, for [lesson 3](03-remote-machines.md): a Linux machine with an
+  NVIDIA GPU that you can reach with Tailscale and SSH (a free Tailscale
+  account is enough for a small lab).
 
 ## How to read the lessons
 
@@ -50,7 +51,7 @@ end of the lesson.
 | --- | --- | --- |
 | [1. The terminal](01-terminal.md) | Open a terminal and move between folders | 15 min |
 | [2. Geneformer in plain words](02-geneformer-in-plain-words.md) | Learn what the model does, without code | 15 min |
-| [3. A remote Linux machine](03-remote-machines.md) | Log in over SSH, check resources, keep jobs running | 20 min, once you have an account |
+| [3. A lab network of GPU machines](03-remote-machines.md) | Tailscale, SSH, tmux, running the quickstart remotely | 20 min, once you have an account |
 | [4. Install Python and Geneformer](04-install.md) | Set up everything the later lessons need | 30 min |
 | [5. Prepare data](05-prepare-data.md) | Download a small public dataset and get it ready | 10 min |
 | [6. Tokenize](06-tokenize.md) | Turn each cell into the model's input | 5 min |

@@ -1,7 +1,7 @@
 # Lesson 4. Install Python and Geneformer
 
 This lesson installs everything lessons 5 to 8 need. Do it on the computer
-where you will run them: your laptop, or a remote Linux machine
+where you will run them: your laptop, or a GPU machine you reach over Tailscale and SSH
 (lesson 3). The steps are the same, except where marked.
 
 Allow about 30 minutes and 3 GB of disk. Most of the time goes on downloads.
@@ -174,5 +174,5 @@ is about 418 MB.
 | `conda: command not found` | The terminal was not reopened after step 1 | Close and reopen it; if it persists, run `~/miniforge3/bin/conda init "$(basename "$SHELL")"` again |
 | `model file MB: 0`, or errors mentioning `.pkl` or `safetensors` header | Git LFS left small placeholder files instead of the real ones | `cd Geneformer`, rerun the `git lfs pull ...` line, then `cd ..` |
 
-Previous: [3. A remote Linux machine](03-remote-machines.md) ·
+Previous: [3. A lab network of GPU machines](03-remote-machines.md) ·
 Next: [5. Prepare data](05-prepare-data.md)

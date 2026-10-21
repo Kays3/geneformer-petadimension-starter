@@ -1,59 +1,70 @@
-# Lesson 3. Working on a remote Linux machine
+# Lesson 3. A small lab network of GPU machines: Tailscale and SSH
 
-Lessons 5 to 8 run on a laptop. They run faster, and fine-tuning and in
-silico perturbation only become practical, on a Linux machine with a GPU, and
-such machines are usually in another room or another building. This lesson
-shows how to log in to one, keep a job running after you disconnect, and
-check its disk, memory and GPU before you start. If you only have a laptop,
-skip to [lesson 4](04-install.md) and come back later.
+Lessons 5 to 8 run on a laptop. Fine-tuning and in silico perturbation only
+become practical on a Linux machine with a GPU, and such machines sit in
+another room or another building. A common lab setup, and the one this
+tutorial is built around, is a handful of GPU machines on a private network
+that you reach from your laptop with **Tailscale** and **SSH**. You log in,
+start a job inside a persistent terminal, close your laptop, and collect the
+results later. If you only have a laptop, skip to [lesson 4](04-install.md)
+and come back later.
 
-Your institution or lab will tell you the machine's address, your user name,
-and how to get a key or account. This tutorial does not cover that, and you
-should never share a private key. Below, `yourname` is your user name and
-`gpu-box` is a placeholder for the machine you were given.
+This lesson describes your **own** network. Names below are placeholders:
+`laptop` is your computer, `gpu-box-1` is a GPU machine you can administer or
+have been given, and `yourname` is your user name on it. Substitute your own.
+Your administrator will tell you how to get an account; never share a private
+key.
 
-## Two tools in two sentences each
+## Three tools in two sentences each
 
-**SSH** ("secure shell") lets you open a terminal on another computer from
-your own. You type `ssh` and the machine's name, and from then on your
-commands run on that machine until you type `exit`.
+**Tailscale** puts your machines on one private network (a "tailnet"), however
+different their physical networks are. Each machine gets a stable name and a
+private address, so `gpu-box-1` works from a cafe as well as from the lab.
+
+**SSH** ("secure shell") opens a terminal on another computer from your own.
+Your commands run on that machine until you type `exit`.
 
 **tmux** keeps a terminal session alive on the remote machine. If your laptop
-sleeps or the network drops, the session, and anything running in it, carries
-on, and you can pick it up again later.
+sleeps or the network drops, the session and anything running in it carry on.
 
-## Step 1. Describe the machine once
+## Step 1. Put both machines on your tailnet
 
-SSH can remember a machine under a short name. Open (or create) the file
-`~/.ssh/config` on your laptop:
+Do this once per machine. Create a free Tailscale account at
+[tailscale.com](https://tailscale.com/), then install the client following
+the instructions for your system at
+[tailscale.com/download](https://tailscale.com/download). On a Linux GPU box
+that is a short script and needs administrator rights, so ask whoever manages
+the machine. On a laptop it is an app. Then log in:
 
 ```bash
-mkdir -p ~/.ssh
-nano ~/.ssh/config
+sudo tailscale up      # on the Linux GPU box (the laptop app has a Log in button)
 ```
 
-Add a block like this, replacing the three values with the ones you were
-given, then save (`Ctrl` + `O`, `Return`, `Ctrl` + `X`):
+A link appears; open it in a browser and sign in with the same account (or the
+same organisation) on every machine. Check who is on the network:
+
+```bash
+tailscale status
+```
 
 ```text
-Host gpu-box
-    HostName gpu-box.example.org
-    User yourname
-    IdentityFile ~/.ssh/id_ed25519
-    ServerAliveInterval 15
-    ServerAliveCountMax 3
+100.x.y.z   laptop        yourname@   macOS   -
+100.x.y.z   gpu-box-1     yourname@   linux   -
 ```
 
-`HostName` is the machine's address; `User` is your account on it;
-`IdentityFile` is the private key file on your laptop (the file that does not
-end in `.pub`); the two `ServerAlive` lines keep an idle connection from
-dropping. If your institution requires a VPN or a jump host, it will give you
-the extra lines.
-
-## Step 2. Log in for the first time
+The first column is the machine's private address (it starts with `100.`),
+the second its name. With **MagicDNS** switched on (the default on new
+tailnets) you can use the name instead of the address, and the full form is
+`gpu-box-1.tailnet-name.ts.net`. Test the connection from the laptop:
 
 ```bash
-ssh gpu-box
+tailscale ping gpu-box-1
+```
+
+## Step 2. Log in with SSH over the tailnet
+
+```bash
+ssh yourname@gpu-box-1
 ```
 
 The first time you reach a machine, SSH asks whether you trust it:
@@ -64,91 +75,114 @@ ED25519 key fingerprint is SHA256:....
 Are you sure you want to continue connecting (yes/no/[fingerprint])?
 ```
 
-SSH wants you to confirm that you have reached the real machine. Compare the
-`SHA256:...` fingerprint with the one your administrator published, and type
-`yes` only if they match. Then the prompt changes:
+Compare the `SHA256:...` fingerprint with the one the machine's
+administrator gives you, and type `yes` only if they match. Then the prompt
+changes to `yourname@gpu-box-1:~$`. Run `hostname`, then `exit` to come back.
+
+If you do not have a key yet, create one on the laptop with
+`ssh-keygen -t ed25519`, and give the administrator the **public** file
+(`~/.ssh/id_ed25519.pub`, the one ending in `.pub`). The private file stays on
+your laptop.
+
+To type less, describe the machine once in `~/.ssh/config` on the laptop:
 
 ```text
-yourname@gpu-box:~$
+Host gpu-box-1
+    HostName gpu-box-1
+    User yourname
+    IdentityFile ~/.ssh/id_ed25519
+    ServerAliveInterval 15
+    ServerAliveCountMax 3
 ```
 
-Your commands now run on the remote machine. Check, then leave:
-
-```bash
-hostname
-exit
-```
-
-`hostname` prints the machine's name. After `exit` you are back on your
-laptop.
+After that, `ssh gpu-box-1` is enough. The two `ServerAlive` lines keep an
+idle connection from dropping.
 
 ## Step 3. Look before you start
 
-Log in again and check three things before any large job. A shared machine
-may already be busy, and a job that runs out of memory can stop other
-people's work too.
+A shared machine may already be busy, and a job that runs out of memory can
+stop other people's work too. Check three things first. The helper in
+`quickstart/remote_run.sh` does it in one command:
 
 ```bash
-ssh gpu-box
-df -h ~
-free -g
-nvidia-smi
+cd quickstart
+./remote_run.sh gpu-box-1 check
 ```
 
-- `df -h ~` shows free disk space in your home folder. Plan for 5 to 15 GB
-  for this tutorial, and much more for real projects.
-- `free -g` shows memory in gigabytes. The column `available` is what a new
-  job can use. Leave at least 15 GB available on a shared machine; if a job
-  would take it below that, wait or use another machine.
-- `nvidia-smi` shows the GPU and the programs using it. If another person's
-  job holds most of the GPU memory, ask before you start. The command is
-  missing on a machine without an NVIDIA GPU, which is fine for lessons 5
-  to 8.
+It prints the free disk space, the memory, the GPU and whether `git`, `curl`,
+`tmux` and `uv` are installed. Read it as follows:
 
-## Step 4. Keep a job running after you disconnect
+- Disk: plan for 10 GB for the quickstart and much more for real projects.
+- Memory: `available` is what a new job can use. Leave at least 15 GB
+  available on a shared machine; if a job would take it below that, wait or
+  use another machine.
+- GPU: if another person's job holds most of the GPU memory, ask before you
+  start. A machine without an NVIDIA GPU is fine for the quickstart, which
+  falls back to the CPU.
 
-On the remote machine, start a named tmux session:
+## Step 4. Run the quickstart on the GPU machine
+
+This is the main route. The job runs on `gpu-box-1` inside tmux, so closing
+your laptop does not stop it:
 
 ```bash
-tmux new -s gf
+./remote_run.sh gpu-box-1 start            # clones the repository there, runs setup and the quickstart
+./remote_run.sh gpu-box-1 status           # RUNNING, plus the last lines of the log
+./remote_run.sh gpu-box-1 fetch            # when it is done: copies results/ to ./results-gpu-box-1/
 ```
 
-Start your long command inside it. To leave it running, press `Ctrl` + `B`,
-release, then press `D`. Later, reconnect and pick it up:
+Arguments after `start` go to the script, for example
+`./remote_run.sh gpu-box-1 start --cells 0` for all cells. The remote machine
+needs `git`, `curl`, `tmux` and [`uv`](https://docs.astral.sh/uv/) and access
+to GitHub and Hugging Face; `check` tells you what is missing.
+
+The same steps by hand, if you prefer to see them:
 
 ```bash
-ssh gpu-box
-tmux attach -t gf
+ssh gpu-box-1
+git clone https://github.com/Kays3/geneformer-petadimension-starter.git
+tmux new -s gf                              # a named session
+cd geneformer-petadimension-starter/quickstart
+./setup.sh && uv run python run_quickstart.py
 ```
 
-`tmux ls` lists your sessions. Type `exit` inside a session to end it when the
-job is finished.
+Press `Ctrl` + `B`, release, then `D` to leave the session running. Later:
+`ssh gpu-box-1`, then `tmux attach -t gf`. `tmux ls` lists sessions; type
+`exit` inside one to end it.
 
-## Step 5. Copy files to and from your laptop
+**Fallback.** No GPU machine yet? Run the same two commands on the laptop,
+as in the main README. The result is the same; only the time differs.
 
-Run these on your laptop, not on the remote machine. The first copies a
-result file down to the current folder; the second sends a file up:
+## Step 5. Copy files to and from the laptop
+
+`fetch` does this for the quickstart. For other files, run these on the
+laptop, not on the remote machine:
 
 ```bash
-scp gpu-box:geneformer-tutorial/pbmc/results/umap_pbmc3k_cls.png .
-scp my_script.py gpu-box:geneformer-tutorial/
+scp gpu-box-1:geneformer-starter/quickstart/results/umap_pbmc3k.png .
+scp my_script.py gpu-box-1:
 ```
 
-Keep large data on the machine (or on shared storage that the machine mounts)
-and copy only small results to your laptop.
+Keep large data on the GPU machine and copy only small results to the laptop.
+Tailscale also has `tailscale file cp` for sending a file between your own
+machines.
 
 ## You should now see
 
-`ssh gpu-box` gives you a prompt on the remote machine, and `df -h ~`,
-`free -g` and (on a GPU machine) `nvidia-smi` print their tables.
+`tailscale status` lists your machines, `ssh gpu-box-1` gives you a prompt on
+the GPU machine, and `./remote_run.sh gpu-box-1 check` prints a table with a
+GPU line.
 
 ## Troubleshooting
 
 | You see | What it means | What to do |
 | --- | --- | --- |
-| `Connection timed out` or `Could not resolve hostname` | The address is wrong, the machine is offline, or a required VPN is off | Check the `HostName` line in `~/.ssh/config`; connect to the VPN if your institution uses one |
-| `Permission denied (publickey)` | The machine does not accept your key | Ask your administrator to add your public key (the `.pub` file). Never send the private key |
-| `WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!` | The machine was reinstalled, or something is wrong | Confirm with your administrator before continuing. Only then remove the old entry with `ssh-keygen -R gpu-box.example.org` and connect again |
+| `Could not resolve hostname gpu-box-1` | MagicDNS is off, the name is wrong, or the laptop is not logged in to Tailscale | Run `tailscale status`; log in on the laptop; use the address from the first column, or turn MagicDNS on in the Tailscale admin console |
+| `Connection timed out` | The machine is off or asleep, or its Tailscale client is stopped | Check `tailscale status` for the machine; ask whoever runs it to start it |
+| `Permission denied (publickey)` | The machine does not accept your key | Ask the administrator to add your public key (the `.pub` file). Never send the private key |
+| `WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!` | The machine was reinstalled, or something is wrong | Confirm with the administrator first. Only then run `ssh-keygen -R gpu-box-1` and connect again |
+| `tmux is not installed` or `MISSING` in `check` | A tool is absent on the GPU machine | Ask the administrator to install it, or use the user-space installers: `uv` has a one-line installer that needs no administrator rights |
+| `tailscale ping` works but `ssh` hangs | The machine's SSH server is not running, or a firewall blocks port 22 | Ask the administrator; as a workaround Tailscale can serve SSH itself (`sudo tailscale up --ssh` on the GPU box) |
 
 Previous: [2. Geneformer in plain words](02-geneformer-in-plain-words.md) ·
 Next: [4. Install Python and Geneformer](04-install.md)

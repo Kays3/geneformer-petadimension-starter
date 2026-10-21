@@ -84,7 +84,7 @@ def test_no_secrets_or_personal_paths() -> None:
         "GitHub token": re.compile(r"gh[pousr]_[A-Za-z0-9]{20,}"),
         "Hugging Face token": re.compile(r"hf_[A-Za-z0-9]{20,}"),
         "private-network address": re.compile(r"\b(100\.\d{1,3}|10\.\d{1,3}|192\.168|172\.(1[6-9]|2\d|3[01]))\.\d{1,3}\.\d{1,3}\b"),
-        "tailnet name": re.compile(r"\.ts\.net|tailscale", re.IGNORECASE),
+        "tailnet name": re.compile(r"(?<!tailnet-name)\.ts\.net", re.IGNORECASE),
         "shared-drive path": re.compile(r"/mnt/nas|~/NAS", re.IGNORECASE),
         "email address": re.compile(r"[\w.+-]+@[\w-]+\.[\w.-]+"),
     }

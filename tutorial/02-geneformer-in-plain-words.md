@@ -102,4 +102,4 @@ Theodoris CV et al. Transfer learning enables predictions in network biology.
 Model card: [huggingface.co/ctheodoris/Geneformer](https://huggingface.co/ctheodoris/Geneformer).
 
 Previous: [1. The terminal](01-terminal.md) ·
-Next: [3. A remote Linux machine](03-remote-machines.md)
+Next: [3. A lab network of GPU machines](03-remote-machines.md)

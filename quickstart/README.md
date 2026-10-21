@@ -17,6 +17,7 @@ uv run python run_quickstart.py --cells 0  # all 2,638 cells
 | --- | --- |
 | `setup.sh` | Fetches Geneformer at a pinned commit, downloads the 104M model and gene dictionaries over HTTPS and verifies their checksums (no `git-lfs` needed), then builds the environment with `uv sync` |
 | `pyproject.toml`, `uv.lock` | The pinned Python environment. `transformers<5` and `pandas<3` are required by Geneformer |
+| `remote_run.sh` | Runs the quickstart on a GPU machine over ssh (Tailscale name or `~/.ssh/config` entry) inside tmux: `check`, `start`, `status`, `fetch`. See [lesson 3](../tutorial/03-remote-machines.md) |
 | `run_quickstart.py` | Prepare, tokenize, embed, check, draw. Writes only to `results/` |
 | `img/` | The picture used in the README |
 

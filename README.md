@@ -35,6 +35,33 @@ embedding agrees with the clustering, not that it is correct about biology.*
 
 ## Quickstart
 
+This starter assumes a small lab network of GPU machines that you reach with
+[Tailscale](https://tailscale.com/) and SSH. The main route runs the job on
+a GPU machine and fetches the result; running it on your own computer is the
+fallback.
+
+### Main route: on a GPU machine over Tailscale and SSH
+
+With the GPU machine (here `gpu-box-1`) on your tailnet and `ssh gpu-box-1`
+working ([lesson 3](tutorial/03-remote-machines.md) sets this up from
+scratch), run on your laptop:
+
+```bash
+git clone https://github.com/Kays3/geneformer-petadimension-starter.git
+cd geneformer-petadimension-starter/quickstart
+./remote_run.sh gpu-box-1 check    # disk, memory, GPU, tools
+./remote_run.sh gpu-box-1 start    # runs setup and the quickstart in tmux on the machine
+./remote_run.sh gpu-box-1 status   # RUNNING, plus the log tail
+./remote_run.sh gpu-box-1 fetch    # copies the results to ./results-gpu-box-1/
+```
+
+The job survives your laptop sleeping. The machine needs `git`, `curl`, `tmux`
+and `uv`, and internet access. The measurements below were taken by running
+the commands in the next section directly on the machines; `remote_run.sh`
+wraps the same commands and has not been timed over a live tailnet.
+
+### Fallback: on your own computer
+
 You need Linux or macOS with `git`, `curl` and
 [`uv`](https://docs.astral.sh/uv/getting-started/installation/). You do not
 need `git-lfs` or `sudo`. Then:
@@ -103,7 +130,7 @@ order. Each ends with *You should now see* and a *Troubleshooting* table.
 | [0. Start here](tutorial/00-start-here.md) | Learn how the lessons work | Nothing to run |
 | [1. The terminal](tutorial/01-terminal.md) | Open a terminal and move between folders | Laptop |
 | [2. Geneformer in plain words](tutorial/02-geneformer-in-plain-words.md) | Understand what the model does, without code | Nothing to run |
-| [3. A remote Linux machine](tutorial/03-remote-machines.md) | Log in over SSH, check resources, keep jobs running | Laptop, connecting to a Linux machine |
+| [3. A lab network of GPU machines](tutorial/03-remote-machines.md) | Tailscale, SSH, tmux, `remote_run.sh` | Laptop, connecting to a GPU machine |
 | [4. Install Python and Geneformer](tutorial/04-install.md) | Set up conda, Geneformer and one model | Laptop or Linux CPU machine |
 | [5. Prepare data](tutorial/05-prepare-data.md) | Download the public 10x PBMC 3k dataset and prepare it | CPU |
 | [6. Tokenize](tutorial/06-tokenize.md) | Turn cells into ranked gene tokens | CPU |
@@ -143,6 +170,19 @@ from lesson 9 was used. Results:
   1.000 for all 2,638 cells).
 - Not tested: the CPU route on a laptop, macOS or Windows installs, and
   lessons 1 to 3 as a new reader would follow them.
+
+### Known limits
+
+- **Operating systems.** Only Linux (ARM and x86) was run. macOS and Windows
+  were not tried.
+- **Remote helper.** `quickstart/remote_run.sh` was checked for syntax and
+  with a stand-in `ssh`, not live over a tailnet, and the Tailscale steps in
+  lesson 3 follow Tailscale's public documentation rather than a fresh
+  install we performed for this tutorial.
+- **Diagram.** The picture at the top is a Mermaid diagram. We did not check
+  how GitHub renders it.
+- **New readers.** Nobody outside the authors has followed the README from a
+  fresh clone yet. If you are the first, an issue with your errors helps.
 
 The quickstart was run from a clean folder on 2026-10-21, as described above.
 Continuous integration checks that every code block parses, every relative link
