@@ -65,7 +65,11 @@ writes `results/umap_pbmc3k.png` and `results/embeddings.csv`. Use
 
 Measured on 2026-10-21 on two Linux workstations (121 GB and 251 GB of
 memory), Python 3.12, PyTorch 2.14.1, transformers 4.57.6, pandas 2.3.3. The
-x86 run was a fresh folder on a machine without `git-lfs`. Not tested: macOS,
+x86 run used the final `setup.sh`, in a fresh folder on a machine without
+`git-lfs`. The ARM setup time (95 s) was measured with an earlier version of
+`setup.sh` that used `git-lfs`; the ARM run times and the output checks are
+unaffected. The setup and run figures include the model (417.6 MB) and the
+PBMC data (30 MB) downloads on the first run. Not tested: macOS,
 Windows, and a laptop CPU. The lockfile covers the common platforms, but we
 only ran the two above.
 
@@ -117,7 +121,8 @@ produce the same kind of result. Terms are explained in the
 ## Worked example from a real run
 
 [`examples/lung-allograft`](examples/lung-allograft/README.md) records a
-completed analysis on a public lung transplant biopsy atlas (CELLxGENE). It
+completed analysis on a public lung transplant biopsy atlas (CELLxGENE). The
+notebook is archived and does not run unchanged (its README says what to adjust). It
 compares frozen Geneformer embeddings plus a simple classifier against a
 partly fine-tuned model, with two donors held out for testing. Read it after
 lesson 8.

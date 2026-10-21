@@ -15,7 +15,8 @@ for tool in git curl uv; do
   command -v "$tool" >/dev/null || { echo "Missing tool: $tool (see README.md)" >&2; exit 1; }
 done
 if command -v sha256sum >/dev/null; then sha() { sha256sum "$1" | cut -d' ' -f1; }
-else sha() { shasum -a 256 "$1" | cut -d' ' -f1; }; fi
+elif command -v shasum >/dev/null; then sha() { shasum -a 256 "$1" | cut -d' ' -f1; }
+else echo "Missing tool: sha256sum or shasum" >&2; exit 1; fi
 
 # Code only: large files arrive as small pointer files that name their checksum.
 if [ ! -d Geneformer ]; then
