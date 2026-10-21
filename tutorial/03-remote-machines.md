@@ -84,8 +84,8 @@ My public SSH key is below (the private key stays on my laptop):
 
 ssh-ed25519 AAAA...paste-your-whole-public-key-line-here... yourname-laptop
 
-I expect to use about 10 GB of disk and one GPU for a few hours per run, and
-will keep at least 15 GB of memory free for other users.
+I expect to use about 10 GB of disk and one GPU for a few hours per run.
+Please tell me any limits on memory, disk or GPU time that I should follow.
 
 Thank you,
 Your name
