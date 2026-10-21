@@ -1,0 +1,20 @@
+[project]
+name = "geneformer-quickstart"
+version = "0.1.0"
+description = "Pinned environment for the Geneformer quickstart"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "geneformer",
+    "pandas<3",
+    "transformers<5",
+    "scanpy",
+    "scikit-learn",
+    "umap-learn",
+    "matplotlib",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+geneformer = { path = "Geneformer" }
