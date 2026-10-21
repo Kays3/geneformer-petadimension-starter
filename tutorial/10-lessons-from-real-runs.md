@@ -2,9 +2,8 @@
 
 Lessons 1 to 9 get a small example to run. This lesson is for the day you
 point Geneformer at a real question and a long GPU job. It collects what went
-wrong, and what we would now do first, in a multi-week Geneformer study of
-cardiomyocyte and immune-cell states in human tissue, run on shared GPU
-machines. Each point is a practice, the reason for it, and a small example.
+wrong, and what we would now do first, in a long Geneformer analysis project
+run on shared GPU machines. Each point is a practice, the reason for it, and a small example.
 None of this is specific to one dataset.
 
 ## 1. Budget the GPU time before you start
@@ -98,8 +97,10 @@ output for the failures that do not raise an error.
 - **Check your test by simulation before you trust it.** In a simulation
   with no true effect, a per-gene signed-rank test rejected at least one gene
   in about three quarters of runs, because genes differ by small systematic
-  offsets that the test does not model. A set-level test of the same data
-  rejected at 4% to 7% against a nominal 5%. A false-positive rate you have
+  offsets that the test does not model. A set-level decision rule on the same data
+  came out at about 6% in the final simulation, and a set-level p-value at
+  about 10%, against a nominal 5%. Both were nearer the nominal rate than the
+  per-gene test, and neither was exactly on it. A false-positive rate you have
   not measured is not 5%.
 - **Small groups get descriptions, not verdicts.** With fewer than about 50
   cells in a group, report the numbers and the direction as observations, with
