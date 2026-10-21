@@ -35,8 +35,9 @@ embedding agrees with the clustering, not that it is correct about biology.*
 
 ## Quickstart
 
-You need Linux or macOS, `git`, [`git-lfs`](https://git-lfs.com) and
-[`uv`](https://docs.astral.sh/uv/getting-started/installation/). Then:
+You need Linux or macOS with `git`, `curl` and
+[`uv`](https://docs.astral.sh/uv/getting-started/installation/). You do not
+need `git-lfs` or `sudo`. Then:
 
 ```bash
 git clone https://github.com/Kays3/geneformer-petadimension-starter.git
@@ -45,7 +46,7 @@ cd geneformer-petadimension-starter/quickstart
 ```
 
 `setup.sh` downloads Geneformer at a pinned commit and the 104M model (about
-420 MB), and builds a pinned Python environment from `uv.lock` (about 1.5
+420 MB, checked against the checksums recorded in Git), and builds a pinned Python environment from `uv.lock` (about 1.5
 minutes on a fast connection). `run_quickstart.py` downloads the public PBMC 3k
 data (about 30 MB), tokenizes it, embeds 300 cells, checks the output, and
 writes `results/umap_pbmc3k.png` and `results/embeddings.csv`. Use
@@ -53,18 +54,20 @@ writes `results/umap_pbmc3k.png` and `results/embeddings.csv`. Use
 
 ### What to expect
 
-| | Measured |
-| --- | --- |
-| Setup | 95 s, 156 MB of memory, about 7 GB of disk with the environment |
-| Run, 300 cells, NVIDIA GB10 GPU | 34 s |
-| Run, 300 cells, 20 ARM CPU cores | 170 s |
-| Peak memory of the run | 2.9 GB (GPU run), 2.8 GB (CPU run) |
-| Last line of output | `done in ... s. Picture: .../results/umap_pbmc3k.png` |
+| | ARM Linux, 20 cores | x86 Linux, 32 cores |
+| --- | --- | --- |
+| Setup | 95 s | 61 s |
+| Run, 300 cells, GPU | 34 s (NVIDIA GB10) | 50 s, first run including the data download (NVIDIA RTX 6000 Ada) |
+| Run, 300 cells, CPU only | 170 s | 64 s |
+| Peak memory of the run | 2.9 GB (GPU), 2.8 GB (CPU) | 2.1 GB (GPU), 2.9 GB (CPU) |
+| Disk used | about 7 GB | about 7 GB |
+| Last line of output | `done in ... s. Picture: .../results/umap_pbmc3k.png` | same |
 
-Measured on 2026-10-21 on a Linux ARM workstation with 121 GB of memory,
-Python 3.12, PyTorch 2.14.1, transformers 4.57.6, pandas 2.3.3. Not tested:
-macOS, Windows, x86 Linux, and a laptop CPU. The lockfile covers the common
-platforms, but we only ran the one above.
+Measured on 2026-10-21 on two Linux workstations (121 GB and 251 GB of
+memory), Python 3.12, PyTorch 2.14.1, transformers 4.57.6, pandas 2.3.3. The
+x86 run was a fresh folder on a machine without `git-lfs`. Not tested: macOS,
+Windows, and a laptop CPU. The lockfile covers the common platforms, but we
+only ran the two above.
 
 ### Prerequisites
 
@@ -79,8 +82,8 @@ platforms, but we only ran the one above.
 
 | You see | Likely cause | What to do |
 | --- | --- | --- |
-| `Missing tool: git-lfs` or `uv` | Not installed | Install it (links above) and rerun `./setup.sh` |
-| `The model file is only ... bytes` | Git LFS left placeholder files | `cd Geneformer && git lfs pull --include="geneformer/*.pkl,Geneformer-V2-104M/*"` |
+| `Missing tool: curl` or `uv` | Not installed | Install it (link above) and rerun `./setup.sh` |
+| `Checksum mismatch` or `The model file is only ... bytes` | A download was cut short | Rerun `./setup.sh`; it fetches only the files that are still placeholders |
 | `Model not found. Run ./setup.sh first.` | You ran the script before setup, or from another folder | `cd quickstart`, run `./setup.sh` |
 | `CUDA out of memory` | The GPU is shared and busy | Run `uv run python run_quickstart.py --device cpu` |
 | `AssertionError: ... all-zero embedding` or `nearly constant` | The check caught a silent failure | Do not use the output. Rerun with `--device cpu` and open an issue with the full log |

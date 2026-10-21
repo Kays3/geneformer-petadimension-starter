@@ -15,7 +15,7 @@ uv run python run_quickstart.py --cells 0  # all 2,638 cells
 
 | File | What it is |
 | --- | --- |
-| `setup.sh` | Fetches Geneformer at a pinned commit and the 104M model, checks that Git LFS delivered the real model file, then builds the environment with `uv sync` |
+| `setup.sh` | Fetches Geneformer at a pinned commit, downloads the 104M model and gene dictionaries over HTTPS and verifies their checksums (no `git-lfs` needed), then builds the environment with `uv sync` |
 | `pyproject.toml`, `uv.lock` | The pinned Python environment. `transformers<5` and `pandas<3` are required by Geneformer |
 | `run_quickstart.py` | Prepare, tokenize, embed, check, draw. Writes only to `results/` |
 | `img/` | The picture used in the README |
