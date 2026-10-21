@@ -8,7 +8,8 @@
 # HOST is any name ssh understands: a Tailscale machine name (MagicDNS) such
 # as gpu-box-1, or a Host entry in ~/.ssh/config. See tutorial lesson 3.
 # Override with environment variables: REMOTE_DIR (default geneformer-starter),
-# SESSION (default gf), REPO_URL.
+# SESSION (default gf), REPO_URL. Values must not contain quotes. The log of
+# setup and run is REMOTE_DIR/quickstart/run.log; uv is looked up in ~/.local/bin too.
 set -euo pipefail
 
 REMOTE_DIR="${REMOTE_DIR:-geneformer-starter}"
@@ -26,16 +27,17 @@ for a in "$@"; do quoted_args+=" $(printf '%q' "$a")"; done
 
 case "$ACTION" in
   check)
-    ssh "$HOST" 'hostname; echo "--- disk"; df -h ~ | tail -1; echo "--- memory (GB)"; free -g | head -2;
+    ssh "$HOST" 'export PATH="$HOME/.local/bin:$PATH"; hostname; echo "--- disk"; df -h ~ | tail -1; echo "--- memory (GB)"; free -g | head -2;
       echo "--- GPU"; (nvidia-smi --query-gpu=name,memory.used,memory.total --format=csv,noheader 2>/dev/null || echo "no NVIDIA GPU found (the run falls back to the CPU)");
       echo "--- tools"; for t in git curl tmux uv; do command -v $t >/dev/null && echo "$t: ok" || echo "$t: MISSING"; done'
     ;;
   start)
     ssh "$HOST" "set -e
+      export PATH=\"\$HOME/.local/bin:\$PATH\"
       command -v tmux >/dev/null || { echo 'tmux is not installed on $HOST' >&2; exit 1; }
       tmux has-session -t '$SESSION' 2>/dev/null && { echo 'A tmux session named $SESSION is already running; use status' >&2; exit 1; }
-      [ -d '$REMOTE_DIR/.git' ] || git clone '$REPO_URL' '$REMOTE_DIR'
-      tmux new-session -d -s '$SESSION' \"cd '$REMOTE_DIR/quickstart' && ./setup.sh && uv run python run_quickstart.py$quoted_args 2>&1 | tee run.log\"
+      if [ -d '$REMOTE_DIR/.git' ]; then git -C '$REMOTE_DIR' pull --ff-only || echo 'Could not update the existing checkout; running what is there.'; else git clone '$REPO_URL' '$REMOTE_DIR'; fi
+      tmux new-session -d -s '$SESSION' \"cd '$REMOTE_DIR/quickstart' && { ./setup.sh && uv run python run_quickstart.py$quoted_args; } 2>&1 | tee run.log\"
       echo 'Started in tmux session $SESSION on $HOST.'"
     echo "Check on it with: ./remote_run.sh $HOST status"
     ;;

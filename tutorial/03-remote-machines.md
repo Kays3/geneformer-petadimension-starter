@@ -174,8 +174,8 @@ It prints the free disk space, the memory, the GPU and whether `git`, `curl`,
 `tmux` and `uv` are installed. Read it as follows:
 
 - Disk: plan for 10 GB for the quickstart and much more for real projects.
-- Memory: `available` is what a new job can use. Leave at least 15 GB
-  available on a shared machine; if a job would take it below that, wait or
+- Memory: `available` is what a new job can use. A margin of 15 GB
+  available is a sensible rule of thumb on a shared machine (ours, not a measured limit); if a job would take it below that, wait or
   use another machine.
 - GPU: if another person's job holds most of the GPU memory, ask before you
   start. A machine without an NVIDIA GPU is fine for the quickstart, which
@@ -195,15 +195,20 @@ your laptop does not stop it:
 Arguments after `start` go to the script, for example
 `./remote_run.sh gpu-box-1 start --cells 0` for all cells. The remote machine
 needs `git`, `curl`, `tmux` and [`uv`](https://docs.astral.sh/uv/) and access
-to GitHub and Hugging Face; `check` tells you what is missing.
+to GitHub and Hugging Face; `check` tells you what is missing (it also looks in `~/.local/bin`, where the `uv` installer puts it). A second `start` updates the existing checkout and reruns. The log of setup and run is `geneformer-starter/quickstart/run.log` on the machine.
+
+The helper has been checked for syntax and run against a stand-in `ssh`, but
+not yet live over a tailnet, and the Tailscale commands in step 1 follow
+Tailscale's public documentation. If something differs on your system, the
+by-hand steps below do the same thing.
 
 The same steps by hand, if you prefer to see them:
 
 ```bash
 ssh gpu-box-1
-git clone https://github.com/Kays3/geneformer-petadimension-starter.git
+git clone https://github.com/Kays3/geneformer-petadimension-starter.git geneformer-starter
 tmux new -s gf                              # a named session
-cd geneformer-petadimension-starter/quickstart
+cd geneformer-starter/quickstart
 ./setup.sh && uv run python run_quickstart.py
 ```
 
