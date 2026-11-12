@@ -52,13 +52,17 @@ the GPU build of PyTorch, and pip kept a further 1 GB of downloads in
 
 ## In silico perturbation (advanced)
 
+For a detailed walkthrough of the paper-aligned pipeline, experimental design,
+interpretation and limitations, read the [advanced guide](paper-pipeline.md).
+
 In silico perturbation asks a model-based question: if this gene were absent
 from the cell, or ranked at the top, how far would the cell's embedding move,
 and in which direction? Geneformer provides two tools for it:
 
 - `InSilicoPerturber` edits the ranked gene list of each cell
-  (`perturb_type` is `"delete"`, `"overexpress"`, `"inhibit"` or
-  `"activate"`) and records the change in the cell or gene embeddings.
+  (`perturb_type` includes `"delete"` and `"overexpress"`) and records the
+  change in the cell or gene embeddings. Current documentation marks `"inhibit"`
+  and `"activate"` as TBA; check the installed version before using them.
 - `InSilicoPerturberStats` summarises those changes across cells and can
   compare them with a null distribution, for example perturbations of
   randomly chosen genes.
