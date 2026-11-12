@@ -1,5 +1,11 @@
 # Geneformer starter: a tutorial and a tested quickstart
 
+![Illustration of a cell and gene-like constellations with the words Geneformer, explore the language of cells](tutorial/img/geneformer-learning-banner.svg)
+
+**A welcoming guide to single-cell models:** learn the ideas, run a small analysis, and explore virtual perturbations.
+
+[Start the tutorial](tutorial/00-start-here.md) · [Run the quickstart](#quickstart) · [Explore the learning lab](#interactive-learning-lab) · [Study perturbation](tutorial/11-run-perturbation.md)
+
 Run [Geneformer](https://huggingface.co/ctheodoris/Geneformer), a model
 trained on gene expression from millions of human cells, on a public dataset,
 from a clean checkout. The repository has two parts:
