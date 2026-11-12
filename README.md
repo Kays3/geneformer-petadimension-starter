@@ -133,6 +133,10 @@ only ran the two above.
 | `AssertionError: ... all-zero embedding` or `nearly constant` | The check caught a silent failure | Do not use the output. Rerun with `--device cpu` and open an issue with the full log |
 | `cannot import name 'SpecialTokensMixin'` | A newer `transformers` than Geneformer supports | Use the pinned environment: `uv run`, not a global `python` |
 
+## Interactive learning lab
+
+Explore gene ranking, zero-shot learning, fine-tuning and virtual perturbation in the [Geneformer Learning Lab](tutorial/learning-lab.html). **GitHub displays HTML as source**, so clone or download this repository and open `tutorial/learning-lab.html` in a browser. It works offline without installation. All numbers and positions are invented teaching examples, not Geneformer predictions.
+
 ## Advanced: the paper's pipeline
 
 The [paper-aligned advanced guide](tutorial/paper-pipeline.md) explains zero-shot embeddings, supervised classification and fine-tuning, and in silico perturbation in detail. It follows the 2026 protocol's high-level sequence and includes a lung disease example, donor-level evaluation, controls, and interpretation. The advanced analysis is a guide and has not been run end to end.
