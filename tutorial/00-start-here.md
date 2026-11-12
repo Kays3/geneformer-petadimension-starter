@@ -58,6 +58,9 @@ end of the lesson.
 | [7. Embeddings](07-embeddings.md) | Get one vector per cell and draw a map of the cells | 20 min or more on a CPU; 1 min on a GPU |
 | [8. Classify](08-classify.md) | Predict cell types from the vectors | 10 min |
 | [9. Next steps](09-next-steps.md) | Fine-tuning on a GPU, in silico perturbation | reading |
+| [10. Lessons from real runs](10-lessons-from-real-runs.md) | Practical lessons from GPU analyses | reading |
+| [11. Run a perturbation](11-run-perturbation.md) | Try a single-gene PBMC pilot | NVIDIA GPU; not yet tested end to end |
+| [12. Interpret perturbations](12-interpret-perturbation.md) | Interpret similarity, goal shifts and donor evidence | reading |
 
 Lessons 5 to 8 run on a laptop. You can also run them on a remote machine after
 lesson 3; the commands are the same.
