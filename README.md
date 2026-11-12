@@ -1,6 +1,6 @@
 # Geneformer starter: a tutorial and a tested quickstart
 
-![Illustration of a cell and gene-like constellations with the words Geneformer, explore the language of cells](tutorial/img/geneformer-learning-banner.svg)
+![Cyberpunk-inspired illustration of a cell and circuitry with the words Geneformer, explore the language of cells](tutorial/img/geneformer-learning-banner.svg)
 
 **A welcoming guide to single-cell models:** learn the ideas, run a small analysis, and explore virtual perturbations.
 
@@ -19,19 +19,16 @@ from a clean checkout. The repository has two parts:
 
 ## What it does
 
-```mermaid
-flowchart LR
-    A["Public data<br/>10x PBMC 3k<br/>2,638 cells"] --> B["Prepare<br/>one .h5ad file,<br/>Ensembl gene IDs"]
-    B --> C["Tokenize<br/>each cell becomes a<br/>ranked list of genes"]
-    C --> D["Geneformer V2-104M<br/>frozen model"]
-    D --> E["Embeddings<br/>768 numbers per cell"]
-    E --> F["Checks<br/>NaN, zeros,<br/>spread"]
-    F --> G["UMAP picture<br/>and CSV"]
-```
+![Quickstart pipeline: prepare PBMC data and Ensembl IDs, tokenize genes, extract frozen Geneformer V2-104M embeddings, check outputs, and create a UMAP and CSV](tutorial/img/cyber-pipeline.svg)
+
+The quickstart prepares PBMC 3k data, ranks genes, extracts frozen Geneformer
+embeddings, checks them, and produces a UMAP and CSV.
 
 Geneformer reads a cell as a list of genes sorted from most to least
 expressed (relative to the rest of the training data), and turns that list
 into a vector of 768 numbers. Cells of the same type end up close together:
+
+![Decorative cyberpunk heading for the PBMC embedding plot](tutorial/img/cyber-plot-header.svg)
 
 ![UMAP of 300 PBMC cells coloured by cell type: B cells, T cells, NK cells and monocytes form separate groups](quickstart/img/umap_300_cells.png)
 
@@ -212,8 +209,8 @@ Lessons 11 and 12 were added later; the GPU perturbation pilot has not yet been 
   with a stand-in `ssh`, not live over a tailnet, and the Tailscale steps in
   lesson 3 follow Tailscale's public documentation rather than a fresh
   install we performed for this tutorial.
-- **Diagram.** The picture at the top is a Mermaid diagram. We did not check
-  how GitHub renders it.
+- **Artwork.** The SVG illustrations were checked for valid XML; their GitHub
+  rendering has not been visually verified.
 - **New readers.** Nobody outside the authors has followed the README from a
   fresh clone yet. If you are the first, an issue with your errors helps.
 
