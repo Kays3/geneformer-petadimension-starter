@@ -4,6 +4,10 @@
 
 **A welcoming guide to single-cell models:** learn the ideas, run a small analysis, and explore virtual perturbations.
 
+![Conceptual illustration of immune cells, molecular networks and an Okinawan coastline](tutorial/img/ai-cell-atlas.jpg)
+
+*AI-generated conceptual artwork inspired by [Kaisar's research website](https://kays3.github.io/). The illustration is not a scientific result.*
+
 [Start the tutorial](tutorial/00-start-here.md) · [Run the quickstart](#quickstart) · [Explore the learning lab](#interactive-learning-lab) · [Study perturbation](tutorial/11-run-perturbation.md)
 
 Run [Geneformer](https://huggingface.co/ctheodoris/Geneformer), a model
@@ -141,6 +145,10 @@ only ran the two above.
 Explore gene ranking, zero-shot learning, fine-tuning and virtual perturbation in the [Geneformer Learning Lab](tutorial/learning-lab.html). **GitHub displays HTML as source**, so clone or download this repository and open `tutorial/learning-lab.html` in a browser. It works offline without installation. All numbers and positions are invented teaching examples, not Geneformer predictions.
 
 ## Advanced: the paper's pipeline
+
+![Conceptual artwork connecting immune cells, molecular networks and heart muscle](tutorial/img/ai-perturbation-landscape.jpg)
+
+*AI-generated illustration: an artistic interpretation of the biological contexts explored in the tutorial.*
 
 The [paper-aligned advanced guide](tutorial/paper-pipeline.md) explains zero-shot embeddings, supervised classification and fine-tuning, and in silico perturbation in detail. It follows the 2026 protocol's high-level sequence and includes a lung disease example, donor-level evaluation, controls, and interpretation. The advanced analysis is a guide and has not been run end to end.
 
