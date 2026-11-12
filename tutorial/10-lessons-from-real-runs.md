@@ -150,4 +150,4 @@ exploratory label, and recorded versions.
 | The cap check stops the job after the first unit | The projection is above the cap | Report the projection and ask before raising the cap; do not edit the cap in the script |
 | A per-gene result says "not estimable" | Too few control genes for that gene | Report it as not estimable; use a set-level comparison instead |
 
-Previous: [9. Next steps](09-next-steps.md) · Back to the [README](../README.md)
+Previous: [9. Next steps](09-next-steps.md) · Next: [11. Run a perturbation](11-run-perturbation.md) · Back to the [README](../README.md)

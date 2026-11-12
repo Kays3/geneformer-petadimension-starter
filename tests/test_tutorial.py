@@ -35,7 +35,7 @@ BASH_BLOCKS = blocks("bash")
 
 def test_lessons_exist_and_end_consistently() -> None:
     lessons = sorted(p for p in (ROOT / "tutorial").glob("[0-9][0-9]-*.md"))
-    assert [p.name[:2] for p in lessons] == [f"{i:02d}" for i in range(11)]
+    assert [p.name[:2] for p in lessons] == [f"{i:02d}" for i in range(13)]
     assert (ROOT / "tutorial" / "GLOSSARY.md").exists()
     for lesson in lessons:
         text = lesson.read_text(encoding="utf-8")

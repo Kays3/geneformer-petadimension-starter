@@ -7,7 +7,7 @@ from a clean checkout. The repository has two parts:
 - a **quickstart**: three commands that turn public blood-cell data into
   embeddings and a picture of the cell types, with automatic checks on the
   output, and
-- a **tutorial** of eleven short lessons for readers who have never used a
+- a **tutorial** of thirteen short lessons for readers who have never used a
   terminal, Python or a remote computer, including what we learned from long
   GPU runs.
 
@@ -161,6 +161,8 @@ order. Each ends with *You should now see* and a *Troubleshooting* table.
 | [8. Classify](tutorial/08-classify.md) | Predict cell types; optionally fine-tune | CPU; GPU for fine-tuning |
 | [9. Next steps](tutorial/09-next-steps.md) | GPU setup, in silico perturbation | GPU |
 | [10. Lessons from real runs](tutorial/10-lessons-from-real-runs.md) | Budget compute, check outputs, use controls, label analyses | Reading |
+| [11. Run a perturbation](tutorial/11-run-perturbation.md) | Run a small single-gene PBMC pilot | NVIDIA GPU |
+| [12. Interpret perturbations](tutorial/12-interpret-perturbation.md) | Read cosine similarities, goal shifts and donor-level evidence | Reading |
 
 The lessons install with conda, the route that was tested lesson by lesson; the
 quickstart uses uv with a lockfile and is the faster way to a working
@@ -193,6 +195,8 @@ from lesson 9 was used. Results:
   1.000 for all 2,638 cells).
 - Not tested: the CPU route on a laptop, macOS or Windows installs, and
   lessons 1 to 3 as a new reader would follow them.
+
+Lessons 11 and 12 were added later; the GPU perturbation pilot has not yet been run end to end.
 
 ### Known limits
 
