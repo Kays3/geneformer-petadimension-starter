@@ -137,6 +137,8 @@ only ran the two above.
 
 The [paper-aligned advanced guide](tutorial/paper-pipeline.md) explains zero-shot embeddings, supervised classification and fine-tuning, and in silico perturbation in detail. It follows the 2026 protocol's high-level sequence and includes a lung disease example, donor-level evaluation, controls, and interpretation. The advanced analysis is a guide and has not been run end to end.
 
+Continue with the guided lessons on [peripheral blood perturbation](tutorial/perturbation-peripheral-blood.md) and [cardiomyocyte perturbation](tutorial/perturbation-cardiomyocytes.md).
+
 ## The tutorial
 
 Start with [Lesson 0](tutorial/00-start-here.md) and follow the lessons in
