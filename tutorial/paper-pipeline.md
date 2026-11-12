@@ -204,6 +204,13 @@ and pinned source describe the available modes. A prior perturbation benchmark
 found that deep models did not consistently exceed simple baselines; include
 appropriate baselines and real perturbation data where possible.
 
+## Worked perturbation lessons
+
+- [Peripheral blood immune cells](perturbation-peripheral-blood.md): plan a donor-aware stimulated-to-resting CD8 T-cell comparison.
+- [Cardiomyocytes](perturbation-cardiomyocytes.md): compare disease modeling and candidate rescue using non-failing, DCM and HCM reference states.
+
+Both are guided exercises; they require appropriate multi-donor datasets and have not been run end to end.
+
 ## 6. What to save and report
 
 Keep a run manifest with input provenance and checksums, donor splits and
