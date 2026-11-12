@@ -4,7 +4,7 @@
 
 **A welcoming guide to single-cell models:** learn the ideas, run a small analysis, and explore virtual perturbations.
 
-![Conceptual illustration of immune cells, molecular networks and an Okinawan coastline](tutorial/img/ai-cell-atlas.jpg)
+![Conceptual illustration of immune cells and molecular networks beneath snowy Hokkaido mountains](tutorial/img/ai-cell-atlas.jpg)
 
 *AI-generated conceptual artwork inspired by [Kaisar's research website](https://kays3.github.io/). The illustration is not a scientific result.*
 
@@ -146,7 +146,7 @@ Explore gene ranking, zero-shot learning, fine-tuning and virtual perturbation i
 
 ## Advanced: the paper's pipeline
 
-![Conceptual artwork connecting immune cells, molecular networks and heart muscle](tutorial/img/ai-perturbation-landscape.jpg)
+![Conceptual artwork connecting immune cells, molecular networks, heart muscle and snowy Hokkaido scenery](tutorial/img/ai-perturbation-landscape.jpg)
 
 *AI-generated illustration: an artistic interpretation of the biological contexts explored in the tutorial.*
 
