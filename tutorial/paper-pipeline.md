@@ -204,6 +204,10 @@ and pinned source describe the available modes. A prior perturbation benchmark
 found that deep models did not consistently exceed simple baselines; include
 appropriate baselines and real perturbation data where possible.
 
+## Interactive learning lab
+
+Open [learning-lab.html](learning-lab.html) from a local clone in your browser to explore ranked genes, learning strategies and an illustrative perturbation space. GitHub's file view displays HTML source rather than running it. The dashboard uses simulated values and does not run Geneformer.
+
 ## Worked perturbation lessons
 
 - [Peripheral blood immune cells](perturbation-peripheral-blood.md): plan a donor-aware stimulated-to-resting CD8 T-cell comparison.
